@@ -1,0 +1,46 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int n, m;
+vector<vector<bool>> mat(21, vector<bool>(21));
+vector<vector<char>> M(21, vector<char>(21));
+
+int dist(int r1, int c1, int r2, int c2){
+  return abs(r1-r2)+abs(c1-c2);
+}
+
+void marca(int i, int j){
+  int t = M[i][j] - '0'; //quanto eu consigo alcança da posição que eu estou [i]][j]
+  for(int l=0; l<n; l++){
+    for(int c=0; c<m; c++){
+      int D = dist(i, j, l, c);//distancia atual p/ onde eu quero ir
+      if(D<=t){
+        mat[l][c]=true;
+      }
+    }
+  }
+}
+int main() {
+  cin>>n>>m;
+  for(int l=0; l<n; l++){
+    for(int c=0; c<m; c++){
+      cin>>M[l][c];
+    }
+  }
+  
+  for(int l=0; l<n; l++){
+    for(int c=0; c<m; c++){
+      if(M[l][c]!='.' && M[l][c]!='#'){
+        marca(l, c);
+      }
+    }
+  }
+  for(int l=0; l<n; l++){
+    for(int c=0; c<m; c++){
+      if(mat[l][c]==true) cout<<'.';
+      else cout<<M[l][c];
+    }
+    cout<<endl;
+  }
+  
+}
