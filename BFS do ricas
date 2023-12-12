@@ -1,0 +1,51 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN = 10, MAXM = 10;
+
+vector<vector<int>> M(MAXN, vector<int>(MAXM, 0));
+
+const vector<pair<int, int>> delta{
+  {-1, 0}, // cima
+  {+1, 0}, // baixo
+  {0, +1}, // direita
+  {0, -1}  // esquerda
+};
+
+bool dentro(int novo_x, int novo_y) {
+  if(novo_x < 0 || novo_x > MAXN - 1) return 0;
+  if(novo_y < 0 || novo_y > MAXM - 1) return 0;
+  return 1;
+}
+
+void bfs(int x, int y) {
+  queue<pair<int, int>> Q;
+  Q.push({x, y});
+  M[x][y] = 1;
+  while(!Q.empty()) { // enquanto tem alguem pra continuar espalhando, a gente continua espalhando a partir daqui
+    pair<int, int> atual = Q.front(); Q.pop();
+    int a = atual.first, b = atual.second;
+
+    // Essa parte eh so pra facilitar a visualizacao, nao eh necessaria {{{
+      for(int i = 0; i < MAXN; i++) {
+        for(int j = 0; j < MAXM; j++) {
+          cout << M[i][j] << ' ';
+        }
+        cout << '\n';
+      }
+      cout << "-----------------------" << '\n';
+    //}}}
+
+    for(int i = 0; i < 4; i++) {
+      pair<int, int> aux = delta[i];
+      int novo_x = a + aux.first;
+      int novo_y = b + aux.second;
+      if(dentro(novo_x, novo_y) && M[novo_x][novo_y] == 0) {
+        M[novo_x][novo_y] = 1, Q.push({novo_x, novo_y});
+      }
+    }
+  }
+}
+int main() {
+  bfs(0, 0);
+}
