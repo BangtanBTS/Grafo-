@@ -1,0 +1,44 @@
+#include <bits/stdc++.h> 
+
+using namespace std;
+int linha, coluna;
+
+vector<vector<char>>M(1000, vector<char>(1000));
+
+vector<vector<int>>vis(1000, vector<int>(1000, 0));
+
+vector<pair<int, int>>movimentos={
+   {0,1}, {0,-1}, {1,0}, {-1,0}//DECB
+};
+bool dentro(int a, int b) {
+  return (a >= 0 && a < linha && b >= 0 && b < coluna);
+};
+void bfs(int linha, int coluna) {
+  vis[linha][coluna] = 1;
+  for(int i = 0; i < 4; i++) {
+    pair<int, int> atual = movimentos[i];
+    int dl = atual.first;
+    int dc = atual.second;
+    if(dentro(linha + dl, coluna + dc) && vis[linha + dl][coluna + dc] == 0 && M[linha + dl][coluna + dc] == '.') {
+      bfs(linha + dl, coluna + dc);
+    }
+  }
+}
+int main(){
+   int grupos=0;
+   cin>>linha>>coluna;
+   for(int l=0; l<linha; l++){
+      for(int c=0; c<coluna; c++){
+         cin>>M[l][c];
+      }
+   }
+   for(int l=0; l<linha; l++){
+      for(int c=0; c<coluna; c++){
+         if(M[l][c]=='.' and vis[l][c]==0){
+            bfs(l, c);
+            grupos++;
+         }
+      }
+   }
+   cout<<grupos;
+}
