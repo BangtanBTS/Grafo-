@@ -1,0 +1,37 @@
+#include <bits/stdc++.h> 
+
+using namespace std;
+
+vector<int>M[200005];
+int profund[200005];
+int vis[200005]={0};
+//vector<int>adj[];
+
+void dfs(int v){
+   for(auto u: M[v]){
+      if(!vis[u]){
+         profund[u]=profund[v]+1;
+         vis[u]=1;
+         dfs(u);
+      }
+   }
+}
+
+int main()
+{  
+   memset(profund, 0, sizeof(profund));
+   int ilha, servico, x, y;
+   cin>>ilha>>servico;
+   int pos=ilha;
+   for(int i=0; i<servico; i++){
+      cin>>x>>y;
+      M[x].push_back(y);
+   }
+   dfs(1);
+   if(profund[pos]==2){
+      cout<<"POSSIBLE"<<endl;
+   }
+   else{
+      cout<<"IMPOSSIBLE"<<endl;
+   }
+}
