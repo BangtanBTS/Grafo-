@@ -1,0 +1,38 @@
+const int INF = 1e9;
+
+int N;
+vector<vector<pair<int, int>>> G;
+
+template<typename X> using min_priority_queue = priority_queue<X, vector<X>, greater<X>>;
+
+vector<int> dijkstra(int comeco) {
+   min_priority_queue<pair<int, int>> Q; Q.push({0, comeco});
+   vector<int> D(N, INF); D[comeco] = 0;
+   vector<int> pai(N, -1);
+   while(!empty(Q)) {
+      pair<int, int> u = Q.top(); Q.pop();
+      int estou = u.second;
+      int peso = u.first;
+
+      if(D[estou] > peso) continue;
+
+      for(auto [vou, custo] : G[estou]) {
+         if(D[vou] > peso + custo) {
+            pai[vou] = estou;
+            D[vou] = peso + custo;
+            Q.push({D[vou], vou});
+         }
+      }
+   }
+
+   vector<int> caminho;
+
+   int estou = N - 1;
+   while(estou != -1) {
+      caminho.push_back(estou + 1);
+      estou = pai[estou];
+   }
+
+   reverse(begin(caminho), end(caminho));
+   return caminho;
+}
